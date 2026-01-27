@@ -2,7 +2,6 @@ FROM amazoncorretto:21-alpine3.22-jdk
 
 LABEL maintainer="Longjianghu <215241062@qq.com>"
 LABEL description="Alpine JDK 21 base image with Asia/Shanghai timezone, Chinese fonts (WenQuanYi), and non-root user."
-LABEL version="1.0"
 
 ARG TIMEZONE=Asia/Shanghai
 
