@@ -1,12 +1,21 @@
 FROM amazoncorretto:17-alpine3.18-jdk
 
 LABEL maintainer="Longjianghu <215241062@qq.com>"
+LABEL description="Alpine JDK 17 base image with Asia/Shanghai timezone and non-root user."
 
-# 更换源
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk update
+ARG TIMEZONE=Asia/Shanghai
 
-# 时区设置
-RUN apk add --no-cache tzdata
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+    apk update && apk add --no-cache \
+        tzdata \
+        curl && \
+    rm -rf /var/cache/apk/* && \
+    ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
+    echo "${TIMEZONE}" > /etc/timezone && \
+    addgroup -S appgroup && adduser -S appuser -G appgroup
 
-ENV TIMEZONE="Asia/Shanghai"
-RUN ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && echo ${TIMEZONE} > /etc/timezone
+WORKDIR /app
+
+USER appuser
+
+CMD ["sh"]
