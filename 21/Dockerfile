@@ -6,10 +6,9 @@ LABEL description="Alpine JDK 21 base image with Asia/Shanghai timezone and non-
 ARG TIMEZONE=Asia/Shanghai
 
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
-    apk update && apk add --no-cache \
+    apk add --no-cache \
         tzdata \
         curl && \
-    rm -rf /var/cache/apk/* && \
     ln -snf /usr/share/zoneinfo/${TIMEZONE} /etc/localtime && \
     echo "${TIMEZONE}" > /etc/timezone && \
     addgroup -S appgroup && adduser -S appuser -G appgroup
